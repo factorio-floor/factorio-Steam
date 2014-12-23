@@ -5,9 +5,9 @@ Various steam pressures and supporting items
 
 Buildings:
 
-HP Feedwater pump - TODO
+HP Feedwater pump - DONE
 
-LP Feedwater pump - PARTIAL - needs recipe
+LP Feedwater pump - DONE
 
 Liquids:
 
@@ -16,8 +16,8 @@ LP steam - DONE
 HP steam - DONE
 
 Technology:
-LP steam TODO
-HP steam TODO
+LP steam DONE
+HP steam DONE
 
 Misc notes and calculations:
 
