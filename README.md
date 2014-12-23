@@ -7,14 +7,17 @@ Buildings:
 
 HP Feedwater pump - TODO
 
-LP Feedwater pump - TODO
+LP Feedwater pump - PARTIAL - needs recipe
 
 Liquids:
 
-LP steam - TODO
+LP steam - DONE
 
-HP steam - TODO
+HP steam - DONE
 
+Technology:
+LP steam TODO
+HP steam TODO
 
 Misc notes and calculations:
 
