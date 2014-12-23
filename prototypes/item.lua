@@ -15,7 +15,7 @@ data:extend({
         icon = "__base__/graphics/icons/small-pump.png",
         flags = {"goes-to-quickbar"},
         subgroup = "energy-pipe-distribution",
-        order = "b[pipe]-c[steam-hp-feedwater-pump]",
+        order = "b[pipe]-d[steam-hp-feedwater-pump]",
         place_result = "steam-hp-feedwater-pump",
         stack_size = 50
     }
