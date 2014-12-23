@@ -1,9 +1,15 @@
 require "defines"
-local isDebug = true
-local steam_feedwater_pump_max_level = 9
+--Enable debug messages?
+local isDebug = false
+--What level to maintain in connected pipes?
+local steam_feedwater_pump_min_level = 8.75
+--How much 'extra' should we add, to prevent adding tiny amounts every tick?
+local steam_feedwater_pump_buffer = .25
+--What is the most we can pump per tick?
+local steam_pumped_per_tick = 1
  
 game.onevent(defines.events.onbuiltentity, function(event)
-	if event.createdentity.name == "steam-lp-feedwater-pump" then
+	if event.createdentity.name == "steam-lp-feedwater-pump" or event.createdentity.name == "steam-hp-feedwater-pump" then
 		if glob.steampumps == nil then
 			glob.steampumps = {}
 		end
@@ -13,20 +19,27 @@ game.onevent(defines.events.onbuiltentity, function(event)
 	end
 end)
 
-
-
 game.onevent(defines.events.ontick, function(event)
 	if glob.steampumps ~= nil then
 		for k,steampump in pairs(glob.steampumps) do
 			if steampump.valid then
 				if  #steampump.fluidbox == 1 then
                     --Get the fluid we have
-                    local fluid = {type = "steam-lp", temperature = 15, amount = 0.0}
-                    if steampump.fluidbox[1] ~= nil then
-                        fluid = steampump.fluidbox[1]
+                    local fluid = steampump.fluidbox[1]
+                    
+                    if fluid == nil then 
+                        fluid = {type = "water", temperature = 15, amount = 0.0}
                     end
 
-                    if fluid.amount < steam_feedwater_pump_max_level then
+                    if fluid.type ~= "steam-hp" and fluid.type ~= "steam-lp" then
+                        if steampump.name == "steam-hp-feedwater-pump" then
+                            fluid.type = "steam-hp"
+                            else
+                            fluid.type = "steam-lp"
+                        end
+                    end
+
+                    if fluid.amount < steam_feedwater_pump_min_level then
                         --Get the neighbour
                         local neighbour = findNeighbourWithWater(steampump);
                         if neighbour ~= nil then
@@ -34,8 +47,9 @@ game.onevent(defines.events.ontick, function(event)
                             local nfluid = neighbour.fluidbox[1]
                             
                             --Reduce by the amount we need
-                            local amount = steam_feedwater_pump_max_level - fluid.amount
+                            local amount = steam_feedwater_pump_min_level + steam_feedwater_pump_buffer - fluid.amount
                             if amount > nfluid.amount then amount = nfluid.amount end
+                            if amount > steam_pumped_per_tick then amount = steam_pumped_per_tick end
                             nfluid.amount = nfluid.amount - amount
                             neighbour.fluidbox[1] = nfluid;
                             --Interpolate the temp
