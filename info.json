@@ -1,0 +1,9 @@
+{
+    "name": "Steam",
+    "version": "0.0.1",
+    "title": "Steam",
+    "author": "Starholme",
+    "homepage": "https://github.com/Starholme/factorio-Steam",
+    "dependencies": ["base"],
+    "description": "Various steam pressures for increased efficiency and storage"
+}
