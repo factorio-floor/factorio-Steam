@@ -1,4 +1,4 @@
-data:extend({
+data:extend( {
     {
         type = "recipe",
         name = "steam-boiler-injector",
@@ -6,24 +6,11 @@ data:extend({
         enabled = true,
         ingredients =
         {
-            {"small-pump", 1},
-            {"steel-plate", 1},
-            {"electronic-circuit", 1}
+            { "small-pump", 1 },
+            { "steel-plate", 1 },
+            { "electronic-circuit", 1 }
         },
-        result= "steam-boiler-injector"
-    },
-    {
-        type = "recipe",
-        name = "steam-hp-feedwater-pump",
-        energy_required = 2,
-        enabled = false,
-        ingredients =
-        {
-            {"small-pump", 1},
-            {"steel-plate", 10},
-            {"electronic-circuit", 1}
-        },
-        result= "steam-hp-feedwater-pump"
+        result = "steam-boiler-injector"
     },
     {
         type = "recipe",
@@ -32,11 +19,11 @@ data:extend({
         enabled = true,
         ingredients =
         {
-            {"small-pump", 1},
-            {"steel-plate", 10},
-            {"electronic-circuit", 1}
+            { "small-pump", 1 },
+            { "steel-plate", 10 },
+            { "electronic-circuit", 1 }
         },
-        result= "steam-condensate-pump"
+        result = "steam-condensate-pump"
     },
     {
         type = "recipe",
@@ -45,10 +32,10 @@ data:extend({
         enabled = true,
         ingredients =
         {
-            {"small-pump", 1},
-            {"steel-plate", 10},
-            {"electronic-circuit", 1}
+            { "small-pump", 1 },
+            { "steel-plate", 10 },
+            { "electronic-circuit", 1 }
         },
-        result= "steam-dryer"
+        result = "steam-dryer"
     }
-})
+} )
