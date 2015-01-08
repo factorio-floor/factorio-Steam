@@ -9,6 +9,7 @@ local steam_pumped_per_tick = 1
 local entitylist = {}
 entitylist['steam-boiler-injector'] = { input = 'steam-feedwater', output ='steam-saturated', minlevel = 8}
 entitylist['steam-condensate-pump'] = { input = 'steam-condensing', output ='steam-feedwater', minlevel = 9.9, maxspeedat = 35, minspeedat = 100}
+entitylist['steam-dryer'] = { input = 'steam-saturated', output ='steam-dry', minlevel = 9.9, maxspeedat = 120, minspeedat = 100}
 
 game.onevent(defines.events.onbuiltentity, function(event)
     for k in pairs(entitylist) do

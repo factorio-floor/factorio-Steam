@@ -21,6 +21,16 @@ data:extend({
     },
      {
         type = "item",
+        name = "steam-dryer",
+        icon = "__base__/graphics/icons/small-pump.png",
+        flags = {"goes-to-quickbar"},
+        subgroup = "energy-pipe-distribution",
+        order = "b[pipe]-d[steam-dryer]",
+        place_result = "steam-dryer",
+        stack_size = 50
+    },
+    {
+        type = "item",
         name = "steam-hp-feedwater-pump",
         icon = "__base__/graphics/icons/small-pump.png",
         flags = {"goes-to-quickbar"},
