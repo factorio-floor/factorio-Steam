@@ -11,6 +11,16 @@ data:extend({
     },
     {
         type = "item",
+        name = "steam-condensate-pump",
+        icon = "__base__/graphics/icons/small-pump.png",
+        flags = {"goes-to-quickbar"},
+        subgroup = "energy-pipe-distribution",
+        order = "b[pipe]-d[steam-condensate-pump]",
+        place_result = "steam-condensate-pump",
+        stack_size = 50
+    },
+     {
+        type = "item",
         name = "steam-hp-feedwater-pump",
         icon = "__base__/graphics/icons/small-pump.png",
         flags = {"goes-to-quickbar"},

@@ -8,7 +8,7 @@ local steam_pumped_per_tick = 1
  
 local entitylist = {}
 entitylist['steam-boiler-injector'] = { input = 'steam-feedwater', output ='steam-saturated', minlevel = 8}
-
+entitylist['steam-condensate-pump'] = { input = 'steam-condensing', output ='steam-feedwater', minlevel = 9.9, maxspeedat = 35, minspeedat = 100}
 
 game.onevent(defines.events.onbuiltentity, function(event)
     for k in pairs(entitylist) do
@@ -47,17 +47,23 @@ game.onevent(defines.events.ontick, function(event)
                             
                             --Reduce by the amount we need
                             local amount = steam_feedwater_pump_min_level + steam_feedwater_pump_buffer - fluid.amount
+                            --Is the amount a sliding scale?
+                            if entitylist[steampump.name].maxspeedat then
+                                amount = (1-(nfluid.temperature - entitylist[steampump.name].minspeedat))/(entitylist[steampump.name].maxspeedat-entitylist[steampump.name].minspeedat) * amount
+                            end
                             if amount > nfluid.amount then amount = nfluid.amount end
                             if amount > steam_pumped_per_tick then amount = steam_pumped_per_tick end
-                            nfluid.amount = nfluid.amount - amount
-                            neighbour.fluidbox[1] = nfluid;
-                            --Interpolate the temp
-                            fluid.temperature = ((fluid.amount * fluid.temperature) + (amount * nfluid.temperature)) / (fluid.amount + amount)
+                            if amount > 0 then
+                                nfluid.amount = nfluid.amount - amount
+                                neighbour.fluidbox[1] = nfluid;
+                                --Interpolate the temp
+                                fluid.temperature = ((fluid.amount * fluid.temperature) + (amount * nfluid.temperature)) / (fluid.amount + amount)
 
-                            --Add the amount we need to our liquid
-                            fluid.amount = fluid.amount + amount
+                                --Add the amount we need to our liquid
+                                fluid.amount = fluid.amount + amount
                             
-                            steampump.fluidbox[1] = fluid
+                                steampump.fluidbox[1] = fluid
+                            end
                         end
                     end                    
 				end
