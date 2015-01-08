@@ -1,12 +1,12 @@
 data:extend({
     {
         type = "item",
-        name = "steam-lp-feedwater-pump",
+        name = "steam-boiler-injector",
         icon = "__base__/graphics/icons/small-pump.png",
         flags = {"goes-to-quickbar"},
         subgroup = "energy-pipe-distribution",
-        order = "b[pipe]-c[steam-lp-feedwater-pump]",
-        place_result = "steam-lp-feedwater-pump",
+        order = "b[pipe]-c[steam-boiler-injector]",
+        place_result = "steam-boiler-injector",
         stack_size = 50
     },
     {

@@ -7,7 +7,7 @@ data:extend( {
         {
             {
                 type = "unlock-recipe",
-                recipe = "steam-lp-feedwater-pump"
+                recipe = "steam-boiler-injector"
             }
         },
         prerequisites = { "electric-engine", "fluid-handling" },

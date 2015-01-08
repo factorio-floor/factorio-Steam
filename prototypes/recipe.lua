@@ -1,7 +1,7 @@
 data:extend({
     {
         type = "recipe",
-        name = "steam-lp-feedwater-pump",
+        name = "steam-boiler-injector",
         energy_required = 2,
         enabled = false,
         ingredients =
@@ -10,7 +10,7 @@ data:extend({
             {"steel-plate", 1},
             {"electronic-circuit", 1}
         },
-        result= "steam-lp-feedwater-pump"
+        result= "steam-boiler-injector"
     },
     {
         type = "recipe",

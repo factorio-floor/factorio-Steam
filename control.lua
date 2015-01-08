@@ -1,22 +1,26 @@
 require "defines"
 --Enable debug messages?
-local isDebug = false
---What level to maintain in connected pipes?
-local steam_feedwater_pump_min_level = 8.75
+local isDebug = true
 --How much 'extra' should we add, to prevent adding tiny amounts every tick?
 local steam_feedwater_pump_buffer = .25
 --What is the most we can pump per tick?
 local steam_pumped_per_tick = 1
  
+local entitylist = {}
+entitylist['steam-boiler-injector'] = { input = 'steam-feedwater', output ='steam-saturated', minlevel = 8}
+
+
 game.onevent(defines.events.onbuiltentity, function(event)
-	if event.createdentity.name == "steam-lp-feedwater-pump" or event.createdentity.name == "steam-hp-feedwater-pump" then
-		if glob.steampumps == nil then
-			glob.steampumps = {}
-		end
+    for k in pairs(entitylist) do
+	    if event.createdentity.name == k then
+		    if glob.steampumps == nil then
+			    glob.steampumps = {}
+		    end
 				
-		table.insert(glob.steampumps, event.createdentity)
-        if isDebug then game.player.print("Feedwater pump added") end
-	end
+		    table.insert(glob.steampumps, event.createdentity)
+            if isDebug then game.player.print("Feedwater pump added") end
+	    end
+    end
 end)
 
 game.onevent(defines.events.ontick, function(event)
@@ -28,20 +32,15 @@ game.onevent(defines.events.ontick, function(event)
                     local fluid = steampump.fluidbox[1]
                     
                     if fluid == nil then 
-                        fluid = {type = "water", temperature = 15, amount = 0.0}
+                        fluid = {type = 'water', temperature = 15, amount = 0.0}
                     end
 
-                    if fluid.type ~= "steam-hp" and fluid.type ~= "steam-lp" then
-                        if steampump.name == "steam-hp-feedwater-pump" then
-                            fluid.type = "steam-hp"
-                            else
-                            fluid.type = "steam-lp"
-                        end
-                    end
+                    --Ensure the output is the right fluid type
+                    fluid.type = entitylist[steampump.name].output 
 
-                    if fluid.amount < steam_feedwater_pump_min_level then
+                    if fluid.amount < entitylist[steampump.name].minlevel then
                         --Get the neighbour
-                        local neighbour = findNeighbourWithWater(steampump);
+                        local neighbour = findNeighbourWithFluid(steampump, entitylist[steampump.name].input);
                         if neighbour ~= nil then
                             --Get it's fluid
                             local nfluid = neighbour.fluidbox[1]
@@ -70,13 +69,13 @@ game.onevent(defines.events.ontick, function(event)
 	end
 end)
 
-function findNeighbourWithWater(entity)
+findNeighbourWithFluid = function(entity, fluidname)
     local neighbour = nil
     for k,v in pairs(entity.neighbours) do 
         if v.fluidbox ~= nil then
             if #v.fluidbox == 1 then
                 if v.fluidbox[1] ~= nil then
-                    if v.fluidbox[1].type == "water" then
+                    if v.fluidbox[1].type == fluidname then
                         neighbour = v
                         break
                     end

@@ -1,10 +1,10 @@
 data:extend({
     {
         type = "pump",
-        name = "steam-lp-feedwater-pump",
+        name = "steam-boiler-injector",
         icon = "__base__/graphics/icons/small-pump.png",
         flags = {"placeable-neutral", "player-creation"},
-        minable = {mining_time = 1, result = "steam-lp-feedwater-pump"},
+        minable = {mining_time = 1, result = "steam-boiler-injector"},
         max_health = 80,
         fast_replaceable_group = "pipe",
         corpse = "small-remnants",
