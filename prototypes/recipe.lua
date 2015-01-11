@@ -37,5 +37,24 @@ data:extend( {
             { "electronic-circuit", 1 }
         },
         result = "steam-dryer"
-    }
+    },
+    {
+        type = "recipe",
+        name = "water-treatment",
+        category = "chemistry",
+        enabled = "true",
+        energy_required = 5,
+        ingredients =
+        {
+            { type = "fluid", name = "water", amount = 10 },
+            {type="item", name="iron-plate", amount=1}
+        },
+        results =
+        {
+            { type = "fluid", name = "steam-feedwater", amount = 10 }
+        },
+        icon = "__base__/graphics/icons/fluid/basic-oil-processing.png",
+        subgroup = "fluid",
+        order = "a[fluid-chemistry]-a[water-treatment]"
+    },
 } )

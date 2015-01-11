@@ -47,7 +47,7 @@ game.onevent(defines.events.ontick, function(event)
                             local nfluid = neighbour.fluidbox[1]
 
                             -- Reduce by the amount we need
-                            local amount = steam_feedwater_pump_min_level + steam_feedwater_pump_buffer - fluid.amount
+                            local amount = entitylist[steampump.name].minlevel + steam_feedwater_pump_buffer - fluid.amount
                             -- Is the amount a sliding scale?
                             if entitylist[steampump.name].maxspeedat then
                                 amount =(1 -(nfluid.temperature - entitylist[steampump.name].minspeedat)) /(entitylist[steampump.name].maxspeedat - entitylist[steampump.name].minspeedat) * amount
@@ -91,4 +91,15 @@ findNeighbourWithFluid = function(entity, fluidname)
         end
     end
     return neighbour
+end
+
+findFluidboxKeyWithFluid = function(entity, fluidname)
+    for k, v in pairs(entity.fluidbox) do
+        if v ~= nil then
+            if v.type == fluidname then
+                return k
+            end
+        end
+    end
+    return nil
 end
