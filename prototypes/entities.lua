@@ -217,5 +217,412 @@ data:extend( {
                 animation_speed = 0.5
             }
         }
+    },
+    {
+    type = "container",
+    name = "steam-he",
+    icon = "__base__/graphics/icons/wooden-chest.png",
+    flags = {"placeable-neutral", "player-creation"},
+    minable = {mining_time = 1, result = "steam-he"},
+    max_health = 50,
+    corpse = "small-remnants",
+    collision_box = {{-0.35, -0.35}, {0.35, 0.35}},
+    fast_replaceable_group = "container",
+    selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
+    inventory_size = 16,
+    open_sound = { filename = "__base__/sound/wooden-chest-open.ogg" },
+    close_sound = { filename = "__base__/sound/wooden-chest-close.ogg" },
+    picture =
+    {
+      filename = "__base__/graphics/entity/wooden-chest/wooden-chest.png",
+      priority = "extra-high",
+      width = 46,
+      height = 33,
+      shift = {0.3, 0}
+    }
+  },
+
+  {
+        type = "pipe",
+        name = "steam-he-pipe-hori",
+        icon = "__base__/graphics/icons/pipe.png",
+        flags = { "placeable-neutral", "player-creation" },
+        minable = { hardness = 0.2, mining_time = 0.5, result = "steam-he-pipe-hori" },
+        max_health = 50,
+        collision_box = { { - 0.29, - 0.29 }, { 0.29, 0.29 } },
+        fluid_box =
+        {
+            base_area = 1,
+            pipe_connections =
+            {
+                { position = { 1, 0 } },
+                { position = { - 1, 0 } }
+            },
+        },
+        pictures =
+        {
+            straight_vertical_single =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            straight_vertical =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            straight_vertical_window =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            straight_horizontal_window =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            straight_horizontal =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            corner_up_right =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            corner_up_left =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            corner_down_right =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            corner_down_left =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            t_up =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            t_down =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            t_right =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            t_left =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            cross =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            ending_up =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            ending_down =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            ending_right =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            ending_left =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            horizontal_window_background =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            vertical_window_background =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            fluid_background =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            low_temperature_flow =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            middle_temperature_flow =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            high_temperature_flow =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            }
+        },
+        horizontal_window_bounding_box = { { - 0.25, - 0.25 }, { 0.25, 0.15625 } },
+        vertical_window_bounding_box = { { - 0.28125, - 0.40625 }, { 0.03125, 0.125 } }
+    },
+
+    {
+        type = "pipe",
+        name = "steam-he-pipe-vert",
+        icon = "__base__/graphics/icons/pipe.png",
+        flags = { "placeable-neutral", "player-creation" },
+        minable = { hardness = 0.2, mining_time = 0.5, result = "steam-he-pipe-vert" },
+        max_health = 50,
+        collision_box = { { - 0.29, - 0.29 }, { 0.29, 0.29 } },
+        fluid_box =
+        {
+            base_area = 1,
+            pipe_connections =
+            {
+                { position = { 0, - 1 } },
+                { position = { 0, 1 } },
+            },
+        },
+        pictures =
+        {
+            straight_vertical_single =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            straight_vertical =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            straight_vertical_window =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            straight_horizontal_window =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            straight_horizontal =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            corner_up_right =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            corner_up_left =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            corner_down_right =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            corner_down_left =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            t_up =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            t_down =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            t_right =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            t_left =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            cross =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            ending_up =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            ending_down =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            ending_right =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            ending_left =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            horizontal_window_background =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            vertical_window_background =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            fluid_background =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            low_temperature_flow =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            middle_temperature_flow =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            },
+            high_temperature_flow =
+            {
+                filename = "__generator-framework__/graphics/transparent.png",
+                priority = "extra-high",
+                width = 1,
+                height = 1
+            }
+        },
+        horizontal_window_bounding_box = { { - 0.25, - 0.25 }, { 0.25, 0.15625 } },
+        vertical_window_bounding_box = { { - 0.28125, - 0.40625 }, { 0.03125, 0.125 } }
     }
 } )

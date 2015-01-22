@@ -57,4 +57,17 @@ data:extend( {
         subgroup = "fluid",
         order = "a[fluid-chemistry]-a[water-treatment]"
     },
+    {
+        type = "recipe",
+        name = "steam-he",
+        energy_required = 2,
+        enabled = true,
+        ingredients =
+        {
+            { "pipe", 2 },
+            { "steel-plate", 1 },
+            { "copper-plate", 2 }
+        },
+        result = "steam-he"
+    },
 } )

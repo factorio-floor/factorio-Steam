@@ -28,5 +28,35 @@ data:extend( {
         order = "b[pipe]-d[steam-dryer]",
         place_result = "steam-dryer",
         stack_size = 50
-    }
+    },
+    {
+        type = "item",
+        name = "steam-he",
+        icon = "__base__/graphics/icons/stone-wall.png",
+        flags = { "goes-to-quickbar" },
+        subgroup = "energy-pipe-distribution",
+        order = "b[pipe]-d[steam-he]",
+        place_result = "steam-he",
+        stack_size = 50
+    },
+    {
+        type = "item",
+        name = "steam-he-pipe-hori",
+        icon = "__base__/graphics/icons/pipe.png",
+        flags = { "goes-to-quickbar" },
+        subgroup = "energy-pipe-distribution",
+        order = "b[pipe]-d[steam-he-pipe-hori]",
+        place_result = "steam-he-pipe-hori",
+        stack_size = 50
+    },
+    {
+        type = "item",
+        name = "steam-he-pipe-vert",
+        icon = "__base__/graphics/icons/pipe.png",
+        flags = { "goes-to-quickbar" },
+        subgroup = "energy-pipe-distribution",
+        order = "b[pipe]-d[steam-he-pipe-vert]",
+        place_result = "steam-he-pipe-vert",
+        stack_size = 50
+    },
 } )

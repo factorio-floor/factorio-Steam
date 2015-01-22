@@ -6,25 +6,67 @@ local steam_feedwater_pump_buffer = .25
 -- What is the most we can pump per tick?
 local steam_pumped_per_tick = 1
 
-local entitylist = { }
-entitylist['steam-boiler-injector'] = { input = 'steam-feedwater', output = 'steam-saturated', minlevel = 8 }
-entitylist['steam-condensate-pump'] = { input = 'steam-condensing', output = 'steam-feedwater', minlevel = 9.9, maxspeedat = 35, minspeedat = 100 }
-entitylist['steam-dryer'] = { input = 'steam-saturated', output = 'steam-dry', minlevel = 9.9, maxspeedat = 120, minspeedat = 100 }
+local pumplist = { }
+pumplist['steam-boiler-injector'] = { input = 'steam-feedwater', output = 'steam-saturated', minlevel = 8 }
+pumplist['steam-condensate-pump'] = { input = 'steam-condensing', output = 'steam-feedwater', minlevel = 9.9, maxspeedat = 35, minspeedat = 100 }
+pumplist['steam-dryer'] = { input = 'steam-saturated', output = 'steam-dry', minlevel = 9.9, maxspeedat = 120, minspeedat = 100 }
 
 game.onevent(defines.events.onbuiltentity, function(event)
-    for k in pairs(entitylist) do
+    -- Register pumps
+    registerPumps(event)
+    registerHe(event)
+end )
+--collision_box = {{-.29, -.29}, {0.89, .29}},
+    --selection_box = {{-.5, -.5}, {1, .5}},
+registerHe = function(event)
+    if event.createdentity.name == "steam-he" then
+        if glob.hes == nil then
+            glob.hes = { }
+        end
+
+        --table.insert(glob.hes, event.createdentity)
+        if isDebug then game.player.print("Heat Exchanger entity added") end
+    end
+end
+
+registerPumps = function(event)
+    for k in pairs(pumplist) do
         if event.createdentity.name == k then
             if glob.steampumps == nil then
                 glob.steampumps = { }
             end
 
             table.insert(glob.steampumps, event.createdentity)
-            if isDebug then game.player.print("Feedwater pump added") end
+            if isDebug then game.player.print("Pump entity added") end
         end
     end
-end )
+end
 
 game.onevent(defines.events.ontick, function(event)
+    tickpumps(event)
+    tickseparators(event)
+    tickhes(event)
+end )
+
+tickhes = function(event)
+    if glob.hes ~= nil then
+        for k, he in pairs(glob.hes) do
+            if he.valid then
+                --get box a
+                --local fba = he.fluid_boxes
+                --get box b
+                --get max energy a
+                --get max energy b
+                --move max
+            else
+                table.remove(glob.hes, k)
+                if isDebug then game.player.print("Heat Exchanger removed") end
+            end
+        end
+    end
+end
+
+tickpumps = function(event)
     if glob.steampumps ~= nil then
         for k, steampump in pairs(glob.steampumps) do
             if steampump.valid then
@@ -37,20 +79,20 @@ game.onevent(defines.events.ontick, function(event)
                     end
 
                     -- Ensure the output is the right fluid type
-                    fluid.type = entitylist[steampump.name].output
+                    fluid.type = pumplist[steampump.name].output
 
-                    if fluid.amount < entitylist[steampump.name].minlevel then
+                    if fluid.amount < pumplist[steampump.name].minlevel then
                         -- Get the neighbour
-                        local neighbour = findNeighbourWithFluid(steampump, entitylist[steampump.name].input);
+                        local neighbour = findNeighbourWithFluid(steampump, pumplist[steampump.name].input);
                         if neighbour ~= nil then
                             -- Get it's fluid
                             local nfluid = neighbour.fluidbox[1]
 
                             -- Reduce by the amount we need
-                            local amount = entitylist[steampump.name].minlevel + steam_feedwater_pump_buffer - fluid.amount
+                            local amount = pumplist[steampump.name].minlevel + steam_feedwater_pump_buffer - fluid.amount
                             -- Is the amount a sliding scale?
-                            if entitylist[steampump.name].maxspeedat then
-                                amount =(1 -(nfluid.temperature - entitylist[steampump.name].minspeedat)) /(entitylist[steampump.name].maxspeedat - entitylist[steampump.name].minspeedat) * amount
+                            if pumplist[steampump.name].maxspeedat then
+                                amount =(1 -(nfluid.temperature - pumplist[steampump.name].minspeedat)) /(pumplist[steampump.name].maxspeedat - pumplist[steampump.name].minspeedat) * amount
                             end
                             if amount > nfluid.amount then amount = nfluid.amount end
                             if amount > steam_pumped_per_tick then amount = steam_pumped_per_tick end
@@ -74,7 +116,11 @@ game.onevent(defines.events.ontick, function(event)
             end
         end
     end
-end )
+end
+
+tickseparators = function(event)
+
+end
 
 findNeighbourWithFluid = function(entity, fluidname)
     local neighbour = nil
