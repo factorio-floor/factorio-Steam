@@ -203,7 +203,11 @@ tickpumps = function(event)
                             local amount = pumplist[steampump.name].minlevel + steam_feedwater_pump_buffer - fluid.amount
                             -- Is the amount a sliding scale?
                             if pumplist[steampump.name].maxspeedat then
-                                amount =(1 -(nfluid.temperature - pumplist[steampump.name].minspeedat)) /(pumplist[steampump.name].maxspeedat - pumplist[steampump.name].minspeedat) * amount
+                                --(actualtemp-minspeedtemp)/(maxspeedtemp-minspeedtemp)
+                                local factor = (nfluid.temperature-pumplist[steampump.name].minspeedat)/(pumplist[steampump.name].maxspeedat - pumplist[steampump.name].minspeedat) * amount
+                                --Needs to be between 1 and 0
+                                factor = math.max(math.min(1, factor), 0)
+                                amount = factor * amount
                             end
                             if amount > nfluid.amount then amount = nfluid.amount end
                             if amount > steam_pumped_per_tick then amount = steam_pumped_per_tick end
