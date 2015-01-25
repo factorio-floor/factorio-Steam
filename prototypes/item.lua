@@ -59,4 +59,14 @@ data:extend( {
         place_result = "steam-he-pipe-vert",
         stack_size = 50
     },
+    {
+        type = "item",
+        name = "steam-separator",
+        icon = "__base__/graphics/icons/pipe.png",
+        flags = { "goes-to-quickbar" },
+        subgroup = "energy-pipe-distribution",
+        order = "b[pipe]-d[steam-separator]",
+        place_result = "steam-separator",
+        stack_size = 50
+    },
 } )

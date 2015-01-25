@@ -70,4 +70,25 @@ data:extend( {
         },
         result = "steam-he"
     },
+    {
+        type = "recipe",
+        name = "steam-separation",
+        category = "chemistry",
+        enabled = "true",
+        energy_required = 5,
+        ingredients =
+        {
+            { type = "fluid", name = "steam-dry", amount = 10 },
+            {type="item", name="iron-plate", amount=1}
+        },
+        results =
+        {
+            { type = "fluid", name = "steam-hp", amount = 10 },
+            { type = "fluid", name = "steam-mp", amount = 10 },
+            { type = "fluid", name = "steam-lp", amount = 10 },
+        },
+        icon = "__base__/graphics/icons/fluid/basic-oil-processing.png",
+        subgroup = "fluid",
+        order = "a[fluid-chemistry]-a[steam-separation]"
+    },
 } )

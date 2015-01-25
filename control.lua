@@ -5,6 +5,10 @@ local isDebug = true
 local steam_feedwater_pump_buffer = .25
 -- What is the most we can pump per tick?
 local steam_pumped_per_tick = 1
+-- What are the steam separator temps? (interpolates values between them)
+local steam_separator = { lptemp = 120, mptemp = 375, hptemp = 540}
+-- What % of feedwater is lost when injecting? (Used to simulate blowdown water)
+local feedwater_lost_per_injected_unit = 0.001
 
 local pumplist = { }
 pumplist['steam-boiler-injector'] = { input = 'steam-feedwater', output = 'steam-saturated', minlevel = 8 }
@@ -23,7 +27,25 @@ defaultfluids["steam-hp"] = { name = "steam-hp", kjdegree = 4.5, maxtemp = 540 }
 game.onevent(defines.events.onbuiltentity, function(event)
     registerPumps(event)
     registerHe(event)
+    registerSeparator(event)
 end )
+
+registerSeparator = function(event)
+    if event.createdentity.name == "steam-separator" then
+        if glob.separators == nil then
+            glob.separators = { }
+        end
+
+        local separator = { }
+        separator.separator = event.createdentity
+        separator.separator.recipe = "steam-separation"
+        separator.separator.active = false
+        separator.separator.operable = false
+
+        table.insert(glob.separators, separator)
+        if isDebug then game.player.print("Steam Separator entity added") end
+    end
+end
 
 registerHe = function(event)
     if event.createdentity.name == "steam-he" then
@@ -188,6 +210,12 @@ tickpumps = function(event)
                             if amount > 0 then
                                 nfluid.amount = nfluid.amount - amount
                                 neighbour.fluidbox[1] = nfluid;
+
+                                -- Blowdown losses
+                                if steampump.name == "steam-boiler-injector" then
+                                    amount = amount - (feedwater_lost_per_injected_unit * amount)
+                                end
+
                                 -- Interpolate the temp
                                 fluid.temperature =((fluid.amount * fluid.temperature) +(amount * nfluid.temperature)) /(fluid.amount + amount)
 
@@ -208,7 +236,76 @@ tickpumps = function(event)
 end
 
 tickseparators = function(event)
+    if glob.separators ~= nil then
+        for k, separator in pairs(glob.separators) do
+            if separator.separator.valid then
+                --Get influid
+                if separator.separator.fluidbox[1] ~= nil then
+                    -- Get the fluid we have
+                    local fluid = separator.separator.fluidbox[1]
+                   
+                    if fluid.amount > 1 then
+                        if isDebug and event.tick % 60 == 0 then game.player.print("Separator amount"..fluid.amount) end
+                        local lpbox, mpbox, hpbox = getseparatorboxes(separator.separator)
+                        local lpout = 0
+                        local mpout = 0
+                        local hpout = 0
+                        local amount = fluid.amount
+                        if amount > steam_pumped_per_tick then amount = steam_pumped_per_tick end
 
+                        if fluid.temperature < steam_separator.lptemp then
+                            lpout = amount
+                        elseif fluid.temperature < steam_separator.mptemp then
+                            lpout = (1 -(fluid.temperature - steam_separator.lptemp)) /(steam_separator.mptemp - steam_separator.lptemp) * amount
+                            mpout = amount - lpout
+                        else
+                            mpout = (1 -(fluid.temperature - steam_separator.mptemp)) /(steam_separator.hptemp - steam_separator.mptemp) * amount
+                            hpout = amount - lpout
+                        end
+
+                        if isDebug and event.tick % 60 == 0 then game.player.print("lpout"..lpout.."mpout"..mpout.."hpout"..hpout..lpbox.amount..mpbox.amount..hpbox.amount) end
+
+                        if lpout < 10-lpbox.amount and mpout < 10-mpbox.amount and hpout < 10-hpbox.amount then
+                            fluid.amount = fluid.amount - lpout - mpout - hpout
+                            lpbox.amount = lpbox.amount + lpout
+                            mpbox.amount = mpbox.amount + mpout
+                            hpbox.amount = hpbox.amount + hpout
+                            
+                            setseparatorboxes(separator.separator, fluid, lpbox, mpbox, hpbox)
+                            if isDebug and event.tick % 60 == 0 then game.player.print("Separator dat:"..serpent.dump(separator.separator.fluidbox)) end
+                        end
+                    end
+                end
+            else
+                table.remove(glob.separators, k)
+                if isDebug then game.player.print("Separator removed") end
+            end
+        end
+    end
+end
+
+getseparatorboxes = function(separator)
+    local lpbox = { type = "steam-lp", amount = 0}
+    local mpbox = { type = "steam-mp", amount = 0}
+    local hpbox = { type = "steam-hp", amount = 0}
+
+    if separator.fluidbox[3] ~= nil then
+        lpbox = separator.fluidbox[3]
+    end
+    if separator.fluidbox[4] ~= nil then
+        mpbox = separator.fluidbox[4]
+    end
+    if separator.fluidbox[2] ~= nil then
+        hpbox = separator.fluidbox[2]
+    end
+    return lpbox, mpbox, hpbox
+end
+
+setseparatorboxes = function(separator, fluid, lpbox, mpbox, hpbox)
+    separator.fluidbox[1] = fluid
+    separator.fluidbox[2] = hpbox
+    separator.fluidbox[3] = lpbox
+    separator.fluidbox[4] = mpbox
 end
 
 findNeighbourWithFluid = function(entity, fluidname)
