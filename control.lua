@@ -39,7 +39,6 @@ registerSeparator = function(event)
         local separator = { }
         separator.separator = event.createdentity
         separator.separator.recipe = "steam-separation"
-        separator.separator.active = false
         separator.separator.operable = false
 
         table.insert(glob.separators, separator)
@@ -249,7 +248,7 @@ tickseparators = function(event)
                     local fluid = separator.separator.fluidbox[1]
                    
                     if fluid.amount > 1 then
-                        if isDebug and event.tick % 60 == 0 then game.player.print("Separator amount"..fluid.amount) end
+                        --if isDebug and event.tick % 60 == 0 then game.player.print("Separator amount"..fluid.amount) end
                         local lpbox, mpbox, hpbox = getseparatorboxes(separator.separator)
                         local lpout = 0
                         local mpout = 0
@@ -260,23 +259,23 @@ tickseparators = function(event)
                         if fluid.temperature < steam_separator.lptemp then
                             lpout = amount
                         elseif fluid.temperature < steam_separator.mptemp then
-                            lpout = (1 -(fluid.temperature - steam_separator.lptemp)) /(steam_separator.mptemp - steam_separator.lptemp) * amount
+                            lpout = (fluid.temperature-steam_separator.mptemp)/(steam_separator.lptemp-steam_separator.mptemp) * amount
                             mpout = amount - lpout
                         else
-                            mpout = (1 -(fluid.temperature - steam_separator.mptemp)) /(steam_separator.hptemp - steam_separator.mptemp) * amount
-                            hpout = amount - lpout
+                            mpout = (fluid.temperature - steam_separator.hptemp)/(steam_separator.mptemp-steam_separator.hptemp) * amount
+                            hpout = amount - mpout
                         end
 
-                        if isDebug and event.tick % 60 == 0 then game.player.print("lpout"..lpout.."mpout"..mpout.."hpout"..hpout..lpbox.amount..mpbox.amount..hpbox.amount) end
+                        --if isDebug and event.tick % 60 == 0 then game.player.print("lpout"..lpout.."mpout"..mpout.."hpout"..hpout..lpbox.amount..mpbox.amount..hpbox.amount) end
 
                         if lpout < 10-lpbox.amount and mpout < 10-mpbox.amount and hpout < 10-hpbox.amount then
                             fluid.amount = fluid.amount - lpout - mpout - hpout
                             lpbox.amount = lpbox.amount + lpout
-                            mpbox.amount = mpbox.amount + mpout
-                            hpbox.amount = hpbox.amount + hpout
+                            mpbox.amount = mpbox.amount + mpout/2
+                            hpbox.amount = hpbox.amount + hpout/4
                             
                             setseparatorboxes(separator.separator, fluid, lpbox, mpbox, hpbox)
-                            if isDebug and event.tick % 60 == 0 then game.player.print("Separator dat:"..serpent.dump(separator.separator.fluidbox)) end
+                            --if isDebug and event.tick % 60 == 0 then game.player.print("Separator dat:"..serpent.dump(separator.separator.fluidbox)) end
                         end
                     end
                 end
@@ -306,6 +305,16 @@ getseparatorboxes = function(separator)
 end
 
 setseparatorboxes = function(separator, fluid, lpbox, mpbox, hpbox)
+    
+    lpbox.temperature = fluid.temperature
+    mpbox.temperature = fluid.temperature
+    hpbox.temperature = fluid.temperature
+
+    if fluid.amount < 0 then fluid.amount = 0 end
+    if lpbox.amount < 0 then lpbox.amount = 0 end
+    if mpbox.amount < 0 then mpbox.amount = 0 end
+    if hpbox.amount < 0 then hpbox.amount = 0 end
+
     separator.fluidbox[1] = fluid
     separator.fluidbox[2] = hpbox
     separator.fluidbox[3] = lpbox
