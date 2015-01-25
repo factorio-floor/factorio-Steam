@@ -1,6 +1,8 @@
 factorio-Steam
 ==============
 
+See the wiki for details at https://github.com/Starholme/factorio-Steam/wiki
+
 Various steam pressures and supporting items
 
 Buildings:
